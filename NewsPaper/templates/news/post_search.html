@@ -1,0 +1,52 @@
+{% extends 'default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}Post list{% endblock title %}
+
+{% block content %}
+
+<h1>Поиск</h1>
+<h3>Всего новостей: {{ all_news|length }}</h3>
+
+<form method="get">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form>
+
+<p><a href="{% url 'post_search' %}">Сбросить поиск</a></p>
+
+{% if posts %}
+{% for post in filterset %}
+<h3><a href="{% url 'post_detail' post.id %}">{{ post.header|truncatewords:10 }}</a></h3>
+{{ post.text|truncatewords:20 }}
+{% endfor %}
+{% endif %}
+
+<p><a href="{% url 'post_create' %}">Добавить статью</a></p>
+
+{% if is_paginated %}
+
+    {% if filterset.has_previous %}
+        <a href="?{% param_replace page=1 %}">First</a>
+        <a href="?{% param_replace page=filterset.previous_page_number %}"><<<</a>
+    {% endif %}
+
+    {% for num in filterset.paginator.page_range %}
+        {% if filterset.paginator.num_pages != 1 %}
+            {% if filterset.number == num %}
+                <a>{{ num }}</a>
+            {% elif num > filterset.number|add:'-3' and num < filterset.number|add:'3' %}
+                <a href="?{% param_replace page=num %}">{{ num }}</a>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {% if filterset.has_next %}
+        <a href="?{% param_replace page=filterset.next_page_number %}">>>></a>
+        <a href="?{% param_replace page=filterset.paginator.num_pages %}">Last</a>
+    {% endif %}
+
+{% endif %}
+
+{% endblock content %}

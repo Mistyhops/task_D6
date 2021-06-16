@@ -1,0 +1,33 @@
+{% extends 'default.html' %}
+
+{% block title %}Профиль пользователя{% endblock title %}
+
+{% block content %}
+
+<p style="text-align: left; font-size: 1.5em">Ваш логин: "{{ request.user.username }}"</p>
+
+<p style="text-align: left; font-size: 1.5em">Фамилия: {{ request.user.last_name }}</p>
+
+<p style="text-align: left; font-size: 1.5em">Имя: {{ request.user.first_name }}</p>
+
+{% if is_not_author %}
+<p style="text-align: left"><button><a href="{% url 'upgrade' %}">Хочу стать автором</a></button></p>
+{% elif not is_not_author %}
+<p style="text-align: left"><button><a href="{% url 'upgrade' %}">Хочу перестать быть автором</a></button></p>
+{% endif %}
+
+<p style="text-align: left; font-size: 1.5em">Мои подписки:</p>
+{% for category in subscribed_categories %}
+    {% if category.pk in subscribers_list %}
+        <form method="post" action="{% url 'subscribe' category.pk %}">
+            {% csrf_token %}
+            <p style="text-align: left"><input type="submit" value="{{ category }}(отписаться)"></p>
+        </form>
+    {% endif %}
+{% endfor %}
+
+
+
+<button><a href="{% url 'logout' %}">Выйти</a></button>
+
+{% endblock content %}

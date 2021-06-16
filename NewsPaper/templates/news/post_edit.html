@@ -1,0 +1,17 @@
+{% extends 'default.html' %}
+
+{% block title %}Create post{% endblock title %}
+
+{% block content %}
+
+<h3>Редактировать новость</h3>
+<h2>{{ post.header }}</h2>
+<h3>{{ post.time|date:'d M Y H:i' }}</h3>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit"value="Подтвердить редактирование">
+</form>
+
+{% endblock content %}

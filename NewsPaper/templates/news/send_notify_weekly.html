@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Новости из ваших подписок за последнюю неделю</h2>
+    {% for post in post_list %}
+    <p><a href="http://127.0.0.1:8000{% url 'post_detail' post.id %}">{{ post|truncatechars:50 }}</a></p>
+    {% endfor %}
+</body>
+</html>

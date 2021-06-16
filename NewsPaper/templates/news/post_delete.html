@@ -1,0 +1,19 @@
+{% extends 'default.html' %}
+
+{% block title %}Create post{% endblock title %}
+
+{% block content %}
+
+<h2>Вы действительно хотите удалить данную новость?</h2>
+<h1>{{ post.header }}</h1>
+<h3>{{ post.time|date:'d M Y H:i' }}</h3>
+
+{{ post.text }}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit"value="Подтвердить удаление">
+</form>
+
+{% endblock content %}
